@@ -1,0 +1,43 @@
+{% extends 'email_list/base.html' %}
+
+{% block content %}
+
+    <div class="container">
+
+        <div class="col-12 mb-3">
+            {% if user.is_authenticated %}
+                <a class="btn btn-outline-primary" href="{% url 'email_list:client_create' %}">Добавить клиента</a>
+            {% endif %}
+        </div>
+        <div class="row text-center">
+            {% for object in object_list %}
+                <div class="col-3">
+                    <div class="card mb-4 box-shadow">
+                        <div class="card-header">
+                            <h4 class="my-0 font-weight-normal">{{ object.first_name }}</h4>
+                        </div>
+                        <div class="card-body">
+                            <h1 class="card-title pricing-card-title">{{ object.price }} р.</h1>
+                            <ul class="list-unstyled mt-3 mb-4 text-start m-3">
+                                <li>- {{ object.description|slice:100 }}</li>
+                            </ul>
+                            <div class="d-grid gap-2 col-10 mx-auto">
+                                <a class="btn btn-lg btn-block btn-outline-info"
+                                   href="{% url 'email_list:client_detail' object.pk %}"
+                                   role="button">О клиенте</a>
+
+                                <a class="btn btn-lg btn-block btn-outline-info"
+                                   href="{% url 'email_list:client_update' object.pk %}"
+                                   role="button">Изменить</a>
+
+                                <a class="btn btn-lg btn-block btn-primary"
+                                   href="{% url 'catalog:plug' %}" role="button">Купить
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
