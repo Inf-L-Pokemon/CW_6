@@ -2,8 +2,8 @@ from django.urls import reverse_lazy
 from django.urls.base import reverse
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView, TemplateView
 
-from email_list.forms import ClientForm, MailingMessageForm
-from email_list.models import Client, MailingMessage
+from email_list.forms import ClientForm, MailingMessageForm, MailingSettingsForm
+from email_list.models import Client, MailingMessage, MailingSettings
 
 
 class PlugTemplateView(TemplateView):
@@ -84,3 +84,32 @@ class MailingMessageUpdateView(UpdateView):
 class MailingMessageDeleteView(DeleteView):
     model = MailingMessage
     success_url = reverse_lazy('email_list:mailing_message_list')
+
+
+class MailingSettingsCreateView(CreateView):
+    model = MailingSettings
+    form_class = MailingSettingsForm
+
+    def get_success_url(self):
+        return reverse('email_list:mailing_settings_detail', args=[self.kwargs.get('pk')])
+
+
+class MailingSettingsListView(ListView):
+    model = MailingSettings
+
+
+class MailingSettingsDetailView(DetailView):
+    model = MailingSettings
+
+
+class MailingSettingsUpdateView(UpdateView):
+    model = MailingSettings
+    form_class = MailingSettingsForm
+
+    def get_success_url(self):
+        return reverse('email_list:mailing_settings_detail', args=[self.kwargs.get('pk')])
+
+
+class MailingSettingsDeleteView(DeleteView):
+    model = MailingSettings
+    success_url = reverse_lazy('email_list:mailing_settings_list')

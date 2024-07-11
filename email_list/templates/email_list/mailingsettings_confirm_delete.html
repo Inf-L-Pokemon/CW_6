@@ -10,9 +10,11 @@
                         <div class="card-body">
                             <form method="post" enctype="multipart/form-data">
                                 {% csrf_token %}
-                                <p>Хотите удалить клиента
-                                    "{{ object.first_name }} {{ object.last_name }} {{ object.patronymic }}"
-                                    "email: {{ object.email }}"</p>
+                                <p>Хотите удалить рассылку
+                                    "Тема: {{ object.mail_message.subject }}"
+                                    "Начало: {{ object.start_datetime }}"
+                                    "Окончание: {{ object.end_datetime }}"
+                                    "Статус: {{ object.status }}"</p>
                                 <button type="submit" class="btn btn-danger">Подтвердить</button>
                                 <a href="{% url 'catalog:product_list' %}" class="btn btn-warning">Отмена</a>
                             </form>
