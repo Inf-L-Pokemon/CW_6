@@ -26,11 +26,11 @@
                             </ul>
                             <div class="d-grid gap-2 col-10 mx-auto">
                                 <a class="btn btn-lg btn-block btn-outline-info"
-                                   href="{% url 'email_list:client_detail' object.pk %}"
-                                   role="button">О сообщении</a>
+                                   href="{% url 'email_list:mailing_settings_detail' object.pk %}"
+                                   role="button">О рассылке</a>
 
                                 <a class="btn btn-lg btn-block btn-outline-info"
-                                   href="{% url 'email_list:client_update' object.pk %}"
+                                   href="{% url 'email_list:mailing_settings_update' object.pk %}"
                                    role="button">Изменить</a>
                                 
                             </div>
