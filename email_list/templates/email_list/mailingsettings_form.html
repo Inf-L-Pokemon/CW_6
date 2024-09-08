@@ -8,7 +8,9 @@
                     <div class="card-header">
                         <h3 class="card-title">
                             {% if object %}
-                                Изменить рассылку
+                                {% if user == object.owner or user.is_superuser %}
+                                    Изменить рассылку
+                                {% endif %}
                             {% else %}
                                 Создать рассылку
                             {% endif %}

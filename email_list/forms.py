@@ -18,7 +18,7 @@ class StyleFormMixin:
 class ClientForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = Client
-        fields = '__all__'
+        exclude = ('owner',)
 
     def clean_description(self):
         cleaned_data = self.cleaned_data['description']
@@ -33,7 +33,7 @@ class ClientForm(StyleFormMixin, forms.ModelForm):
 class MailingMessageForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = MailingMessage
-        fields = '__all__'
+        exclude = ('owner',)
 
     def clean_subject(self):
         cleaned_data = self.cleaned_data['subject']
@@ -57,7 +57,7 @@ class MailingMessageForm(StyleFormMixin, forms.ModelForm):
 class MailingSettingsForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = MailingSettings
-        fields = '__all__'
+        exclude = ('owner',)
 
 
 class AttemptForm(StyleFormMixin, forms.ModelForm):

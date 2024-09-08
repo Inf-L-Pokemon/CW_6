@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from django.conf import settings
 from django.db import models
 
 NULLABLE = {'blank': True, 'null': True}
@@ -12,6 +13,9 @@ class Client(models.Model):
     patronymic = models.CharField(max_length=30, verbose_name='Отчество', **NULLABLE)
     description = models.TextField(verbose_name='Комментарий', **NULLABLE)
 
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL,
+                              verbose_name='Владелец карточки клиента', **NULLABLE)
+
     def __str__(self):
         return f'{self.first_name} {self.last_name} {self.patronymic} ({self.email})'
 
@@ -23,6 +27,9 @@ class Client(models.Model):
 class MailingMessage(models.Model):
     subject = models.CharField(max_length=100, verbose_name='Тема письма')
     message = models.TextField(verbose_name='Сообщение', **NULLABLE)
+
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL,
+                              verbose_name='Владелец сообщения для рассылки', **NULLABLE)
 
     def __str__(self):
         return f'{self.subject}: {self.message}'
@@ -45,6 +52,9 @@ class MailingSettings(models.Model):
 
     clients = models.ManyToManyField(Client, verbose_name='Получатели')
     mail_message = models.ForeignKey(MailingMessage, on_delete=models.CASCADE, verbose_name='Сообщение', **NULLABLE)
+
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL,
+                              verbose_name='Владелец рассылки', **NULLABLE)
 
     def __str__(self):
         return f'{self.mail_message.subject}. {self.status}. {'Активна' if self.is_active else 'Не активна'}'
