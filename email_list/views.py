@@ -1,14 +1,26 @@
+import random
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.urls.base import reverse
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView, TemplateView
 
+from blog.models import BlogPost
 from email_list.forms import ClientForm, MailingMessageForm, MailingSettingsForm
 from email_list.models import Client, MailingMessage, MailingSettings
 
 
 class MainPageView(TemplateView):
     template_name = 'email_list/main_page.html'
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        context_data['count_mailing_settings'] = len(MailingSettings.objects.all())
+        context_data['count_active_mailing_settings'] = len(MailingSettings.objects.filter(is_active=True))
+        context_data['clients'] = len(Client.objects.all())
+        context_data['blog_list'] = random.sample(list(BlogPost.objects.all()), len(list(BlogPost.objects.all())))[:3]
+
+        return context_data
 
 
 class PlugTemplateView(TemplateView):
