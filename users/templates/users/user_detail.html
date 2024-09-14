@@ -1,0 +1,24 @@
+{% extends 'email_list/base.html' %}
+
+{% block content %}
+    {% load my_tag %}
+    <div class="container">
+        <div class="row text-center">
+            {% if user == object or user.is_superuser %}
+                <div class="col-3">
+                    <div class="card mb-4 box-shadow">
+                        <div class="card-header">
+                            <h4 class="my-0 font-weight-normal">{{ object.email }}</h4>
+                        </div>
+                        <div class="card-body">
+                            <h1 class="card-title pricing-card-title">{{ object.phone }}</h1>
+                            <img class="card-img-top" src="{% my_media object.avatar %}"
+                                 alt="Здесь должно быть изображение" style="max-width: 300px; max-height: 300px; ">
+                            <h1 class="card-title pricing-card-title">{{ object.country }}</h1>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

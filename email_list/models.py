@@ -62,6 +62,9 @@ class MailingSettings(models.Model):
     class Meta:
         verbose_name = 'Рассылка'
         verbose_name_plural = 'Рассылки'
+        permissions = [
+            ('stop_mailing', 'Can stop mailing')
+        ]
 
 
 class Attempt(models.Model):

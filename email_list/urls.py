@@ -4,11 +4,12 @@ from email_list.apps import EmailListConfig
 from email_list.views import ClientListView, ClientDetailView, ClientCreateView, ClientUpdateView, ClientDeleteView, \
     PlugTemplateView, MailingMessageCreateView, MailingMessageListView, MailingMessageDetailView, \
     MailingMessageUpdateView, MailingMessageDeleteView, MailingSettingsCreateView, MailingSettingsListView, \
-    MailingSettingsDetailView, MailingSettingsUpdateView, MailingSettingsDeleteView
+    MailingSettingsDetailView, MailingSettingsUpdateView, MailingSettingsDeleteView, MainPageView
 
 app_name = EmailListConfig.name
 
 urlpatterns = [
+    path('', MainPageView.as_view(), name='main'),
     path('client/create/', ClientCreateView.as_view(), name='client_create'),
     path('client/list', ClientListView.as_view(), name='client_list'),
     path('client/<int:pk>/', ClientDetailView.as_view(), name='client_detail'),

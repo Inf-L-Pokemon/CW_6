@@ -12,6 +12,7 @@ class User(AbstractUser):
     phone = models.CharField(max_length=11, verbose_name="Телефон", **NULLABLE)
     avatar = models.ImageField(upload_to='users/avatars/', verbose_name="Аватар", **NULLABLE)
     country = models.CharField(max_length=10, verbose_name="Страна", **NULLABLE)
+    is_active = models.BooleanField(default=True, verbose_name="Активен")
 
     token = models.CharField(max_length=100, verbose_name="Token", **NULLABLE)
 
@@ -24,3 +25,7 @@ class User(AbstractUser):
     class Meta:
         verbose_name = "Пользователь"
         verbose_name_plural = "Пользователи"
+        permissions = [
+            ('view_list_user', 'Can view list user'),
+            ('lock_user', 'Can lock user')
+        ]

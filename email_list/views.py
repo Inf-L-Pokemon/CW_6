@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.urls.base import reverse
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView, TemplateView
@@ -6,25 +7,29 @@ from email_list.forms import ClientForm, MailingMessageForm, MailingSettingsForm
 from email_list.models import Client, MailingMessage, MailingSettings
 
 
+class MainPageView(TemplateView):
+    template_name = 'email_list/main_page.html'
+
+
 class PlugTemplateView(TemplateView):
     template_name = 'email_list/plug.html'
 
 
-class ClientCreateView(CreateView):
+class ClientCreateView(LoginRequiredMixin, CreateView):
     model = Client
     form_class = ClientForm
     success_url = reverse_lazy('email_list:client_list')
 
 
-class ClientListView(ListView):
+class ClientListView(LoginRequiredMixin, ListView):
     model = Client
 
 
-class ClientDetailView(DetailView):
+class ClientDetailView(LoginRequiredMixin, DetailView):
     model = Client
 
 
-class ClientUpdateView(UpdateView):
+class ClientUpdateView(LoginRequiredMixin, UpdateView):
     model = Client
     form_class = ClientForm
 
@@ -43,26 +48,26 @@ class ClientUpdateView(UpdateView):
             return self.render_to_response(self.get_context_data(form=form, formset=formset))
 
 
-class ClientDeleteView(DeleteView):
+class ClientDeleteView(LoginRequiredMixin, DeleteView):
     model = Client
     success_url = reverse_lazy('email_list:client_list')
 
 
-class MailingMessageCreateView(CreateView):
+class MailingMessageCreateView(LoginRequiredMixin, CreateView):
     model = MailingMessage
     form_class = MailingMessageForm
     success_url = reverse_lazy('email_list:mailing_message_create')
 
 
-class MailingMessageListView(ListView):
+class MailingMessageListView(LoginRequiredMixin, ListView):
     model = MailingMessage
 
 
-class MailingMessageDetailView(DetailView):
+class MailingMessageDetailView(LoginRequiredMixin, DetailView):
     model = MailingMessage
 
 
-class MailingMessageUpdateView(UpdateView):
+class MailingMessageUpdateView(LoginRequiredMixin, UpdateView):
     model = MailingMessage
     form_class = MailingMessageForm
 
@@ -81,12 +86,12 @@ class MailingMessageUpdateView(UpdateView):
             return self.render_to_response(self.get_context_data(form=form, formset=formset))
 
 
-class MailingMessageDeleteView(DeleteView):
+class MailingMessageDeleteView(LoginRequiredMixin, DeleteView):
     model = MailingMessage
     success_url = reverse_lazy('email_list:mailing_message_list')
 
 
-class MailingSettingsCreateView(CreateView):
+class MailingSettingsCreateView(LoginRequiredMixin, CreateView):
     model = MailingSettings
     form_class = MailingSettingsForm
 
@@ -94,15 +99,15 @@ class MailingSettingsCreateView(CreateView):
         return reverse('email_list:mailing_settings_detail', args=[self.kwargs.get('pk')])
 
 
-class MailingSettingsListView(ListView):
+class MailingSettingsListView(LoginRequiredMixin, ListView):
     model = MailingSettings
 
 
-class MailingSettingsDetailView(DetailView):
+class MailingSettingsDetailView(LoginRequiredMixin, DetailView):
     model = MailingSettings
 
 
-class MailingSettingsUpdateView(UpdateView):
+class MailingSettingsUpdateView(LoginRequiredMixin, UpdateView):
     model = MailingSettings
     form_class = MailingSettingsForm
 
@@ -110,6 +115,6 @@ class MailingSettingsUpdateView(UpdateView):
         return reverse('email_list:mailing_settings_detail', args=[self.kwargs.get('pk')])
 
 
-class MailingSettingsDeleteView(DeleteView):
+class MailingSettingsDeleteView(LoginRequiredMixin, DeleteView):
     model = MailingSettings
     success_url = reverse_lazy('email_list:mailing_settings_list')
