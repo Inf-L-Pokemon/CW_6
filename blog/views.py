@@ -13,6 +13,7 @@ class PostCreateView(CreateView):
 
 class PostListView(ListView):
     model = BlogPost
+    ordering = ['date_published']
 
 
 class PostDetailView(DetailView):
