@@ -32,6 +32,13 @@ class ClientCreateView(LoginRequiredMixin, CreateView):
     form_class = ClientForm
     success_url = reverse_lazy('email_list:client_list')
 
+    def form_valid(self, form):
+        client = form.save()
+        client.owner = self.request.user
+        client.save()
+
+        return super().form_valid(form)
+
 
 class ClientListView(LoginRequiredMixin, ListView):
     model = Client
@@ -48,17 +55,6 @@ class ClientUpdateView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse('email_list:client_detail', args=[self.kwargs.get('pk')])
 
-    def form_valid(self, form):
-        context_data = self.get_context_data()
-        formset = context_data['formset']
-        if form.is_valid() and formset.is_valid():
-            self.object = form.save()
-            formset.instance = self.object
-            formset.save()
-            return super().form_valid(form)
-        else:
-            return self.render_to_response(self.get_context_data(form=form, formset=formset))
-
 
 class ClientDeleteView(LoginRequiredMixin, DeleteView):
     model = Client
@@ -68,7 +64,14 @@ class ClientDeleteView(LoginRequiredMixin, DeleteView):
 class MailingMessageCreateView(LoginRequiredMixin, CreateView):
     model = MailingMessage
     form_class = MailingMessageForm
-    success_url = reverse_lazy('email_list:mailing_message_create')
+    success_url = reverse_lazy('email_list:mailing_message_list')
+
+    def form_valid(self, form):
+        message = form.save()
+        message.owner = self.request.user
+        message.save()
+
+        return super().form_valid(form)
 
 
 class MailingMessageListView(LoginRequiredMixin, ListView):
@@ -86,17 +89,6 @@ class MailingMessageUpdateView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse('email_list:mailing_message_detail', args=[self.kwargs.get('pk')])
 
-    def form_valid(self, form):
-        context_data = self.get_context_data()
-        formset = context_data['formset']
-        if form.is_valid() and formset.is_valid():
-            self.object = form.save()
-            formset.instance = self.object
-            formset.save()
-            return super().form_valid(form)
-        else:
-            return self.render_to_response(self.get_context_data(form=form, formset=formset))
-
 
 class MailingMessageDeleteView(LoginRequiredMixin, DeleteView):
     model = MailingMessage
@@ -106,9 +98,14 @@ class MailingMessageDeleteView(LoginRequiredMixin, DeleteView):
 class MailingSettingsCreateView(LoginRequiredMixin, CreateView):
     model = MailingSettings
     form_class = MailingSettingsForm
+    success_url = reverse_lazy('email_list:mailing_settings_list')
 
-    def get_success_url(self):
-        return reverse('email_list:mailing_settings_detail', args=[self.kwargs.get('pk')])
+    def form_valid(self, form):
+        settings = form.save()
+        settings.owner = self.request.user
+        settings.save()
+
+        return super().form_valid(form)
 
 
 class MailingSettingsListView(LoginRequiredMixin, ListView):

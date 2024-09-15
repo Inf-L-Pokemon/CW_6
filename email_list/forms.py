@@ -55,9 +55,25 @@ class MailingMessageForm(StyleFormMixin, forms.ModelForm):
 
 
 class MailingSettingsForm(StyleFormMixin, forms.ModelForm):
+
     class Meta:
         model = MailingSettings
-        exclude = ('owner',)
+        exclude = ('owner', 'status')
+
+    def __init__(self, *args, **kwargs):
+        # self.owner = kwargs.pop("owner", None)
+        # super().__init__(*args, **kwargs)
+        # if self.owner:
+        #     self.fields["clients"].queryset = Client.objects.filter()
+
+        user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        self.fields['mail_message'].queryset = MailingMessage.objects.filter(owner=user)
+        self.fields['clients'].queryset = Client.objects.filter(owner=user)
+
+        # super().__init__(*args, **kwargs)
+        # self.fields['clients'].queryset = Client.objects.filter(owner=self.instance.owner)
+        # self.fields['mail_message'].queryset = MailingMessage.objects.filter(owner=self.instance.owner)
 
 
 class AttemptForm(StyleFormMixin, forms.ModelForm):
