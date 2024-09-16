@@ -107,6 +107,11 @@ class MailingSettingsCreateView(LoginRequiredMixin, CreateView):
 
         return super().form_valid(form)
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
 
 class MailingSettingsListView(LoginRequiredMixin, ListView):
     model = MailingSettings
