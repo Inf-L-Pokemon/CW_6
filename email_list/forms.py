@@ -58,7 +58,7 @@ class MailingSettingsForm(StyleFormMixin, forms.ModelForm):
 
     class Meta:
         model = MailingSettings
-        exclude = ('owner', 'status')
+        exclude = ('owner', 'status', 'is_active')
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)

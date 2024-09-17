@@ -128,6 +128,11 @@ class MailingSettingsUpdateView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse('email_list:mailing_settings_detail', args=[self.kwargs.get('pk')])
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
 
 class MailingSettingsDeleteView(LoginRequiredMixin, DeleteView):
     model = MailingSettings

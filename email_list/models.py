@@ -1,6 +1,5 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
-from django.conf import settings
 from django.db import models
 
 from users.models import User
@@ -48,9 +47,9 @@ class MailingSettings(models.Model):
     start_datetime = models.DateTimeField(default=datetime.now, verbose_name='Начало рассылки')
     end_datetime = models.DateTimeField(default=datetime.now, verbose_name='Окончание рассылки')
 
-    period = models.CharField(max_length=15, choices=periods, default='per_month', verbose_name='Период рассылки')
-    status = models.CharField(max_length=15, choices=statuses, default='created', verbose_name='Статус рассылки')
-    is_active = models.BooleanField(default=False, verbose_name='Активна')
+    period = models.CharField(max_length=15, choices=periods, default='раз в месяц', verbose_name='Период рассылки')
+    status = models.CharField(max_length=15, choices=statuses, default='создана', verbose_name='Статус рассылки')
+    is_active = models.BooleanField(default=True, verbose_name='Активна')
 
     clients = models.ManyToManyField(Client, verbose_name='Получатели')
     mail_message = models.ForeignKey(MailingMessage, on_delete=models.CASCADE, verbose_name='Сообщение', **NULLABLE)
@@ -72,11 +71,13 @@ class MailingSettings(models.Model):
 class Attempt(models.Model):
     statuses = ((True, 'Успешно'), (False, 'Не успешно'))
 
-    last_attempt_datetime = models.DateTimeField(auto_now=True, verbose_name='Дата и время последней попытки рассылки',
+    last_attempt_datetime = models.DateTimeField(auto_now=False, verbose_name='Дата и время последней попытки рассылки',
                                                  **NULLABLE)
     status = models.CharField(max_length=10, choices=statuses, default=True, verbose_name='Статус попытки', **NULLABLE)
 
     mailing_settings = models.ForeignKey(MailingSettings, on_delete=models.CASCADE, verbose_name='Рассылка', **NULLABLE)
+
+    server_response = models.CharField(verbose_name='Ответ почтового сервера, если он был', **NULLABLE)
 
     def __str__(self):
         return f'{self.mailing_settings.mail_message.subject}. {self.last_attempt_datetime} - {self.status}.'
