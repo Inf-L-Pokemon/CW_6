@@ -12,6 +12,7 @@ python-decouple = "^3.8"
 psycopg2 = "^2.9.9"
 django-apscheduler = "^0.6.2"
 pillow = "^10.4.0"
+redis = "^5.0.8"
 
 
 [build-system]

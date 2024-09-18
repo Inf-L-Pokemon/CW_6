@@ -1,4 +1,5 @@
 from django.urls import path
+from django.views.decorators.cache import cache_page
 
 from email_list.apps import EmailListConfig
 from email_list.views import ClientListView, ClientDetailView, ClientCreateView, ClientUpdateView, ClientDeleteView, \
@@ -9,7 +10,7 @@ from email_list.views import ClientListView, ClientDetailView, ClientCreateView,
 app_name = EmailListConfig.name
 
 urlpatterns = [
-    path('', MainPageView.as_view(), name='main'),
+    path('', cache_page(10)(MainPageView.as_view()), name='main'),
     path('client/create/', ClientCreateView.as_view(), name='client_create'),
     path('client/list', ClientListView.as_view(), name='client_list'),
     path('client/<int:pk>/', ClientDetailView.as_view(), name='client_detail'),

@@ -3,6 +3,7 @@ from django.urls.base import reverse
 from django.views.generic import DetailView, CreateView, ListView, UpdateView, DeleteView
 
 from blog.models import BlogPost
+from blog.services import get_posts_from_cache
 
 
 class PostCreateView(CreateView):
@@ -14,6 +15,9 @@ class PostCreateView(CreateView):
 class PostListView(ListView):
     model = BlogPost
     ordering = ['date_published']
+
+    def get_queryset(self):
+        return get_posts_from_cache()
 
 
 class PostDetailView(DetailView):

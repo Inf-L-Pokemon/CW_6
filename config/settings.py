@@ -150,3 +150,12 @@ EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
 EMAIL_USE_SSL = config('EMAIL_USE_SSL', cast=bool)
+
+CACHE_ENABLED = True
+if CACHE_ENABLED:
+    CACHES = {
+        "default":{
+            "BACKEND": "django.core.cache.backends.redis.RedisCache",
+            "LOCATION": config('REDIS_URL'),
+        }
+    }
