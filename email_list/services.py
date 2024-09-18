@@ -57,13 +57,13 @@ def send_newsletter_periodic_email():
 
             current_timedelta = current_datetime - log.last_attempt_datetime
 
-            if obj.period == 'раз в день' and current_timedelta >= timedelta(days=1):
+            if obj.period == 'per_day' and current_timedelta >= timedelta(days=1):
                 send_newsletter_email(obj)
                 print(f'Выполнена повторная рассылка раз в день')
-            elif obj.period == 'раз в неделю' and current_timedelta >= timedelta(weeks=1):
+            elif obj.period == 'per_week' and current_timedelta >= timedelta(weeks=1):
                 send_newsletter_email(obj)
                 print(f'Выполнена повторная рассылка раз в неделю')
-            elif obj.period == 'раз в месяц' and current_timedelta >= timedelta(weeks=4):
+            elif obj.period == 'per_month' and current_timedelta >= timedelta(weeks=4):
                 send_newsletter_email(obj)
                 print(f'Выполнена повторная рассылка раз в месяц')
 
