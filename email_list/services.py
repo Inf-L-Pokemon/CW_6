@@ -29,10 +29,14 @@ def send_newsletter_email(mailing_settings):
             mailing_settings.status = 'запущена'
             mailing_settings.save()
     except smtplib.SMTPException as e:
-        log = Attempt.objects.create(mailing_settings=mailing_settings, server_response=e)
-        mailing_settings.status = 'запущена'
+        log = Attempt.objects.filter(mailing_settings=mailing_settings)[0]
+        zone = pytz.timezone(settings.TIME_ZONE)
+        log.last_attempt_datetime = datetime.now(zone)
+        log.server_response = e
         log.status = 'Не успешно'
         log.save()
+        mailing_settings.status = 'запущена'
+        mailing_settings.save()
     print(f'Попытка рассылки: {log.status}')
 
 
@@ -46,11 +50,10 @@ def send_newsletter_periodic_email():
             log = Attempt.objects.filter(mailing_settings=obj)[0]
         else:
             log = Attempt.objects.create(mailing_settings=obj, last_attempt_datetime=current_datetime)
+            print('Первая попытка рассылки')
+            send_newsletter_email(obj)
 
         if obj.start_datetime < current_datetime < obj.end_datetime:
-            if obj.status == 'создана':
-                print('Первая попытка рассылки')
-                send_newsletter_email(obj)
 
             current_timedelta = current_datetime - log.last_attempt_datetime
 

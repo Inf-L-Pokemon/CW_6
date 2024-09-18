@@ -17,8 +17,8 @@ class MessageAdmin(admin.ModelAdmin):
 
 @admin.register(MailingSettings)
 class SettingsAdmin(admin.ModelAdmin):
-    list_display = ('id', 'period', 'status', 'start_datetime', 'end_datetime', 'is_active',)
-    list_filter = ('status', 'is_active', 'period', 'start_datetime', 'end_datetime',)
+    list_display = ('id', 'period', 'start_datetime', 'end_datetime', 'is_active',)
+    list_filter = ('is_active', 'period', 'start_datetime', 'end_datetime',)
 
 
 @admin.register(Attempt)
