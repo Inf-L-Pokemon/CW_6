@@ -12,7 +12,7 @@
         </div>
         <div class="row text-center">
             {% for object in object_list %}
-                {% if user == object.owner or user.is_superuser %}
+                {% if user == object.owner or user.is_superuser or perms.email_list.stop_mailing %}
                     <div class="col-3">
                         <div class="card mb-4 box-shadow">
                             <div class="card-header">
@@ -34,10 +34,11 @@
                                     <a class="btn btn-lg btn-block btn-outline-info"
                                        href="{% url 'email_list:mailing_settings_update' object.pk %}"
                                        role="button">Изменить</a>
-                                    
+                                    {% if user == object.owner or user.is_superuser or not perms.email_list.stop_mailing %}
                                     <a class="btn btn-lg btn-block btn-outline-danger"
                                    href="{% url 'email_list:mailing_settings_delete' object.pk %}"
                                    role="button">Удалить</a>
+                                        {% endif %}
 
                                 </div>
                             </div>

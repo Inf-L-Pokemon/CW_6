@@ -16,7 +16,7 @@ class UserUpdateForm(StyleFormMixin, UserChangeForm):
         exclude = ('token',)
 
 
-class UserModeratorForm(StyleFormMixin, UserChangeForm):
+class UserUpdateModeratorForm(StyleFormMixin, UserChangeForm):
     class Meta:
         model = User
         fields = ('is_active',)

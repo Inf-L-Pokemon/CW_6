@@ -1,7 +1,7 @@
 {% extends 'email_list/base.html' %}
 
 {% block content %}
-    {% if user == object.owner or user.is_superuser %}
+    {% if user == object.owner or user.is_superuser or perms.email_list.stop_mailing %}
         <div class="container text-center">
             <div class="col">
                 <h2 class="text-center">Тема: {{ object.mail_message.subject }}</h2>

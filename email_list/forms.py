@@ -67,6 +67,13 @@ class MailingSettingsForm(StyleFormMixin, forms.ModelForm):
         self.fields['clients'].queryset = Client.objects.filter(owner=user)
 
 
+class MailingSettingsModeratorsForm(StyleFormMixin, forms.ModelForm):
+
+    class Meta:
+        model = MailingSettings
+        fields = ('is_active', )
+
+
 class AttemptForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = Attempt

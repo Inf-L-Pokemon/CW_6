@@ -1,12 +1,13 @@
 import random
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.urls import reverse_lazy
 from django.urls.base import reverse
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView, TemplateView
 
 from blog.models import BlogPost
-from email_list.forms import ClientForm, MailingMessageForm, MailingSettingsForm
+from email_list.forms import ClientForm, MailingMessageForm, MailingSettingsForm, MailingSettingsModeratorsForm
 from email_list.models import Client, MailingMessage, MailingSettings
 
 
@@ -128,10 +129,13 @@ class MailingSettingsUpdateView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse('email_list:mailing_settings_detail', args=[self.kwargs.get('pk')])
 
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs['user'] = self.request.user
-        return kwargs
+    def get_form_class(self):
+        user = self.request.user
+        if user == self.object.owner:
+            return MailingSettingsForm
+        if user.has_perm('email_list.stop_mailing'):
+            return MailingSettingsModeratorsForm
+        raise PermissionDenied
 
 
 class MailingSettingsDeleteView(LoginRequiredMixin, DeleteView):

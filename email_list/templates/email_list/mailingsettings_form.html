@@ -8,7 +8,7 @@
                     <div class="card-header">
                         <h3 class="card-title">
                             {% if object %}
-                                {% if user == object.owner or user.is_superuser %}
+                                {% if user == object.owner or user.is_superuser or perms.email_list.stop_mailing %}
                                     Изменить рассылку
                                 {% endif %}
                             {% else %}

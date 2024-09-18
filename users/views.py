@@ -9,7 +9,7 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 
 from config.settings import EMAIL_HOST_USER
-from users.forms import UserCreateForm, UserModeratorForm, UserForm
+from users.forms import UserCreateForm, UserForm, UserUpdateForm, UserUpdateModeratorForm
 from users.models import User
 
 
@@ -64,8 +64,10 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_form_class(self):
         user = self.request.user
+        if user == self.object:
+            return UserUpdateForm
         if user.has_perm('users.lock_user'):
-            return UserModeratorForm
+            return UserUpdateModeratorForm
         raise PermissionDenied
 
 
