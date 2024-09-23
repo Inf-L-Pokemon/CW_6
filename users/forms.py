@@ -13,7 +13,10 @@ class UserCreateForm(StyleFormMixin, UserCreationForm):
 
 class UserUpdateForm(StyleFormMixin, UserChangeForm):
     class Meta:
-        exclude = ('token',)
+        model = User
+        exclude = (
+            'token', 'is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions', 'date_joined',
+            'last_login', 'password')
 
 
 class UserUpdateModeratorForm(StyleFormMixin, UserChangeForm):

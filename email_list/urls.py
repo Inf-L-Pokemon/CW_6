@@ -5,7 +5,7 @@ from email_list.apps import EmailListConfig
 from email_list.views import ClientListView, ClientDetailView, ClientCreateView, ClientUpdateView, ClientDeleteView, \
     PlugTemplateView, MailingMessageCreateView, MailingMessageListView, MailingMessageDetailView, \
     MailingMessageUpdateView, MailingMessageDeleteView, MailingSettingsCreateView, MailingSettingsListView, \
-    MailingSettingsDetailView, MailingSettingsUpdateView, MailingSettingsDeleteView, MainPageView
+    MailingSettingsDetailView, MailingSettingsUpdateView, MailingSettingsDeleteView, MainPageView, AttemptDetailView
 
 app_name = EmailListConfig.name
 
@@ -26,5 +26,6 @@ urlpatterns = [
     path('mailingsettings/<int:pk>/', MailingSettingsDetailView.as_view(), name='mailing_settings_detail'),
     path('mailingsettings/update/<int:pk>/', MailingSettingsUpdateView.as_view(), name='mailing_settings_update'),
     path('mailingsettings/delete/<int:pk>', MailingSettingsDeleteView.as_view(), name='mailing_settings_delete'),
+    path('attempt/<int:pk>/', AttemptDetailView.as_view(), name='attempt_detail'),
     path('plug/', PlugTemplateView.as_view(), name='plug'),
 ]

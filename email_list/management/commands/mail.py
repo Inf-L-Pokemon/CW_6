@@ -1,9 +1,9 @@
 from django.core.management import BaseCommand
 
-from email_list.services import send_newsletter_periodic_email
+from email_list.services import start_scheduler
 
 
 class Command(BaseCommand):
     """Команда на запуск рассылки"""
     def handle(self, *args, **options):
-        send_newsletter_periodic_email()
+        start_scheduler()

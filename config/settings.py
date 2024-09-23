@@ -151,7 +151,7 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
 EMAIL_USE_SSL = config('EMAIL_USE_SSL', cast=bool)
 
-CACHE_ENABLED = True
+CACHE_ENABLED = config('CACHE_ENABLED', cast=bool)
 if CACHE_ENABLED:
     CACHES = {
         "default":{

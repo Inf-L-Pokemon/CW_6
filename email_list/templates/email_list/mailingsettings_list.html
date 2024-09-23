@@ -35,10 +35,16 @@
                                        href="{% url 'email_list:mailing_settings_update' object.pk %}"
                                        role="button">Изменить</a>
                                     {% if user == object.owner or user.is_superuser or not perms.email_list.stop_mailing %}
-                                    <a class="btn btn-lg btn-block btn-outline-danger"
-                                   href="{% url 'email_list:mailing_settings_delete' object.pk %}"
-                                   role="button">Удалить</a>
+                                        {% if object.attempt_pk %}
+                                            <a class="btn btn-lg btn-block btn-outline-success"
+                                               href="{% url 'email_list:attempt_detail' object.attempt_pk %}"
+                                               role="button">Попытки рассылки</a>
                                         {% endif %}
+
+                                        <a class="btn btn-lg btn-block btn-outline-danger"
+                                           href="{% url 'email_list:mailing_settings_delete' object.pk %}"
+                                           role="button">Удалить</a>
+                                    {% endif %}
 
                                 </div>
                             </div>

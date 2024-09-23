@@ -8,7 +8,7 @@ from django.views.generic import ListView, CreateView, DetailView, UpdateView, D
 
 from blog.models import BlogPost
 from email_list.forms import ClientForm, MailingMessageForm, MailingSettingsForm, MailingSettingsModeratorsForm
-from email_list.models import Client, MailingMessage, MailingSettings
+from email_list.models import Client, MailingMessage, MailingSettings, Attempt
 
 
 class MainPageView(TemplateView):
@@ -117,6 +117,19 @@ class MailingSettingsCreateView(LoginRequiredMixin, CreateView):
 class MailingSettingsListView(LoginRequiredMixin, ListView):
     model = MailingSettings
 
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        mailing_list = MailingSettings.objects.all()
+
+        for mailing in mailing_list:
+
+            if Attempt.objects.filter(mailing_settings=mailing).exists():
+                attempt = Attempt.objects.filter(mailing_settings=mailing)[0]
+                mailing.attempt_pk = int(attempt.pk)
+
+        context_data['object_list'] = mailing_list
+        return context_data
+
 
 class MailingSettingsDetailView(LoginRequiredMixin, DetailView):
     model = MailingSettings
@@ -141,3 +154,7 @@ class MailingSettingsUpdateView(LoginRequiredMixin, UpdateView):
 class MailingSettingsDeleteView(LoginRequiredMixin, DeleteView):
     model = MailingSettings
     success_url = reverse_lazy('email_list:mailing_settings_list')
+
+
+class AttemptDetailView(LoginRequiredMixin, DetailView):
+    model = Attempt
